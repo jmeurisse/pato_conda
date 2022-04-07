@@ -1,8 +1,8 @@
 """
-    File name: move_exec.py
+    File name: change_lib_path_macos.py
     Author: Jeremie Meurisse and Federico Semeraro
     Date created: 11/15/2021
-    Date last modified: 11/15/2021
+    Date last modified: 04/07/2022
     Python Version: 3.9
 """
 
@@ -70,13 +70,11 @@ def env_var_exists(env_var):
 src_dir=env_var_exists('SRC_DIR')
 
 ### Get folders of executables and libraries
-list_exec=["blockMesh","mppequil","PATOx"] # OpenFOAM, Mutation++, and PATO executables
-dirs=get_folders(list_exec) # OpenFOAM, Mutation++, and PATO  prefixes
+list_exec=["mppequil","PATOx"] # Mutation++, and PATO executables
+dirs=get_folders(list_exec) # Mutation++, and PATO  prefixes
 sub_dirs=["bin","lib"]
-of_index=list_exec.index("blockMesh")
 mpp_index=list_exec.index("mppequil")
 pato_index=list_exec.index("PATOx")
-of_platform_name=os.path.basename(dirs[of_index])
 
 ### Verify dirs
 for i,dir_i in enumerate(dirs):
@@ -117,7 +115,7 @@ for i,dir_i in enumerate(dirs):
                 cmd="install_name_tool -add_rpath \"@executable_path/../lib\" "+file_i
                 os.system(cmd)
                 if i == pato_index:
-                    cmd="install_name_tool -add_rpath \"@executable_path/../../../../OpenFOAM/OpenFOAM-7/platforms/"+of_platform_name+"/lib\" "+file_i
+                    cmd="install_name_tool -add_rpath \"@executable_path/../../../../../volume_openfoam_for_pato/OpenFOAM/OpenFOAM-7/platforms/darwin64ClangDPInt32Opt/lib\" "+file_i
                     os.system(cmd)
                     cmd="install_name_tool -add_rpath \"@executable_path/../../src/thirdParty/mutation++/install/lib\" "+file_i
                     os.system(cmd)
